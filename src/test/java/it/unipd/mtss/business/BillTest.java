@@ -26,7 +26,7 @@ public class BillTest {
  private User userTest = new User(0, "test", new Date(100000));
 
  @Test
- public void testEmptyList() throws BillException {
+ public void testEmptyList() {
   List<EItem> empty = new ArrayList<>();
   double total = 0;
   try {
@@ -34,9 +34,26 @@ public class BillTest {
   }
   catch(BillException e) {}
   assertEquals(total, 0,0);
-  
  }
 
+ @Test(expected = BillException.class)
+ public void testNullList() throws BillException {
+  List<EItem> empty = null;
+  try {
+  bill.getOrderPrice(empty, userTest);
+  }
+  catch(NullPointerException e) {}
+    throw new BillException();
+ }
+
+ @Test(expected = BillException.class)
+ public void testNegativeAmount() throws BillException {
+  List<EItem> mock = new ArrayList<>();
+  mock.add(new EItemImpl("bad", EItemType.CPU, -2.5));
+  mock.add(new EItemImpl("good", EItemType.CPU, 2.5));
+
+  bill.getOrderPrice(mock, userTest);
+ }
 
  @Test
  public void calculateTotalPrice() {
@@ -59,8 +76,6 @@ public class BillTest {
   assertEquals(total, 431.98,0);
 }
 
-
-//prezzo per 5 Processori, lo sconto non deve essere applicato
 @Test
 public void calculatePrice5Processors() {
   List<EItem> items = new ArrayList<>();
@@ -84,8 +99,6 @@ public void calculatePrice5Processors() {
   assertEquals(total, 1250.9, 0);
 }
 
-
-//prezzo per 6 processori, lo sconto deve essere applicato
 @Test
 public void calculatePrice6Processors() {
   List<EItem> items = new ArrayList<>();
@@ -111,7 +124,6 @@ public void calculatePrice6Processors() {
   assertEquals(total, 1775.90, 0);
 }
 
-//prezzo per 5 Processori con altra merce, lo sconto non deve essere applicato
 @Test
 public void calculatePrice5ProcessorsOtherItem() {
   List<EItem> items = new ArrayList<>();
@@ -137,7 +149,6 @@ public void calculatePrice5ProcessorsOtherItem() {
   assertEquals(total, 1260.9, 0);
 }
 
-//prezzo per 6 processori con altra merce, lo sconto deve essere applicato
 @Test
 public void calculatePrice6ProcessorsOtherItem() {
   List<EItem> items = new ArrayList<>();
@@ -163,7 +174,39 @@ public void calculatePrice6ProcessorsOtherItem() {
   }
   catch(BillException e) {}
   assertEquals(total, 1785.90, 0);
+}
 
+@Test
+public void calculatePrice10Mouses() {
+  List<EItem> items = new ArrayList<>();
+  for(int i = 0 ; i<10; i++)
+  {
+    items.add(new EItemImpl("mock",EItemType.MOUSE,50));
+  }
+  items.add(new EItemImpl("different",EItemType.KEYBOARD,37));
+  double total = 0;
+  try {
+    total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(total, 537, 0);
+}
+
+@Test
+public void calculatePrice11Mouses() {
+  List<EItem> items = new ArrayList<>();
+  for(int i = 0 ; i<10; i++)
+  {
+    items.add(new EItemImpl("mock",EItemType.MOUSE,50));
+  }
+  items.add(new EItemImpl("cheapest", EItemType.MOUSE,40));
+  items.add(new EItemImpl("different",EItemType.KEYBOARD,37));
+  double total = 0;
+  try {
+    total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(total, 537, 0);
 }
 
 }
