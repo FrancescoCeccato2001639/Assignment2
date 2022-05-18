@@ -25,4 +25,9 @@ public class EItemImpl implements EItem {
  return price;
  }
 
+ @Override
+ public EItemType getType() {
+ return type;
+ }
+
 }

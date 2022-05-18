@@ -7,4 +7,5 @@ package it.unipd.mtss.model;
 
 public interface EItem {
  double getPrice();
+ EItemType getType();
 }
