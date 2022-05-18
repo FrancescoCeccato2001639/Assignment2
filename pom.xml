@@ -26,8 +26,8 @@
       <scope>test</scope>
     </dependency>
 	<dependency>
-         <group>javax.xml.bind</group>
-         <artifact>jaxb-api</artifact>
+         <groupId>javax.xml.bind</groupId>
+         <artifactId>jaxb-api</artifactId>
          <version>2.3.1</version>
       </dependency>
   </dependencies>
