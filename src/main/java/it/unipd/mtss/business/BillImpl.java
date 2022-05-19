@@ -29,6 +29,7 @@ public double getOrderPrice(List <EItem> itemsOrdered, User user)
 
  total -= getDiscountMore5Processors(itemsOrdered);
  total -= getDiscountMoreThan10Mouses(itemsOrdered);
+ total -= getDiscountSameQtyMousesKeyboard(itemsOrdered);
  return total;
 }
 
@@ -86,5 +87,52 @@ private double getDiscountMoreThan10Mouses(List <EItem> itemsOrdered)
  }
  return counter > 10? min : 0;
 }
+
+private double getDiscountSameQtyMousesKeyboard(List <EItem> itemsOrdered)
+ throws BillException {
+ double lowerPrice = -1;
+ double countMouses = 0;
+ double countKeyboards = 0;
+ 
+ for(EItem i: itemsOrdered)
+ {
+  switch(i.getType())
+  {
+   case MOUSE:
+   countMouses++;
+    if(lowerPrice==-1)
+    {
+     lowerPrice=i.getPrice();
+    }
+    else if(i.getPrice()<lowerPrice)
+    {
+     lowerPrice=i.getPrice();
+    }
+    break;
+    case KEYBOARD:
+    countKeyboards++;
+    if(lowerPrice==-1)
+    {
+     lowerPrice=i.getPrice();
+    }
+    else if(i.getPrice()<lowerPrice)
+    {
+     lowerPrice=i.getPrice();
+    }
+    break;
+   default:
+  }
+ }
+
+ if(countKeyboards==countMouses && countKeyboards+countMouses!=0)
+ {
+  return lowerPrice;
+ }
+ else
+ {
+  return 0;
+ }
+}
+
 
 }
