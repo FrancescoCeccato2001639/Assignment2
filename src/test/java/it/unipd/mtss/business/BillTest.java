@@ -73,7 +73,7 @@ public class BillTest {
   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
-  assertEquals(total, 431.98,0);
+  assertEquals(total, 420.99,0);
 }
 
 @Test
@@ -209,4 +209,99 @@ public void calculatePrice11Mouses() {
   assertEquals(total, 537, 0);
 }
 
+@Test
+public void calculatePrice2Mouses3Keyboards() {
+  List<EItem> items = new ArrayList<>();
+  EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
+  EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
+  EItem keyboard1 = new EItemImpl("MOUSE1",EItemType.KEYBOARD,70);
+  EItem keyboard2 = new EItemImpl("MOUSE2",EItemType.KEYBOARD,170);
+  EItem keyboard3 = new EItemImpl("MOUSE3",EItemType.KEYBOARD,270);
+  
+  items.add(mouse1);
+  items.add(mouse2);
+  items.add(keyboard1);
+  items.add(keyboard2);
+  items.add(keyboard3);
+  
+  double total = 0;
+  try {
+  total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(total, 710, 0);
+}
+
+@Test
+public void calculatePrice3Mouses2Keyboards() {
+  List<EItem> items = new ArrayList<>();
+  EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
+  EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
+  EItem mouse3 = new EItemImpl("MOUSE3",EItemType.MOUSE,250);
+  EItem keyboard1 = new EItemImpl("MOUSE1",EItemType.KEYBOARD,70);
+  EItem keyboard2 = new EItemImpl("MOUSE2",EItemType.KEYBOARD,170);
+    
+  items.add(mouse1);
+  items.add(mouse2);
+  items.add(mouse3);
+  items.add(keyboard1);
+  items.add(keyboard2);
+  
+  double total = 0;
+  try {
+  total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(total, 690, 0);
+}
+
+@Test
+public void calculatePriceSameQtyMousesKeyboardsMouseLower() {
+  List<EItem> items = new ArrayList<>();
+  EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
+  EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
+  EItem mouse3 = new EItemImpl("MOUSE3",EItemType.MOUSE,250);
+  EItem keyboard1 = new EItemImpl("MOUSE1",EItemType.KEYBOARD,70);
+  EItem keyboard2 = new EItemImpl("MOUSE2",EItemType.KEYBOARD,170);
+  EItem keyboard3 = new EItemImpl("MOUSE2",EItemType.KEYBOARD,270);
+    
+  items.add(mouse1);
+  items.add(mouse2);
+  items.add(mouse3);
+  items.add(keyboard1);
+  items.add(keyboard2);
+  items.add(keyboard3);
+  
+  double total = 0;
+  try {
+  total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(total, 910, 0);
+}
+
+@Test
+public void calculatePriceSameQtyMousesKeyboardsKeyboardLower() {
+  List<EItem> items = new ArrayList<>();
+  EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
+  EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
+  EItem mouse3 = new EItemImpl("MOUSE3",EItemType.MOUSE,250);
+  EItem keyboard1 = new EItemImpl("MOUSE1",EItemType.KEYBOARD,30);
+  EItem keyboard2 = new EItemImpl("MOUSE2",EItemType.KEYBOARD,170);
+  EItem keyboard3 = new EItemImpl("MOUSE2",EItemType.KEYBOARD,270);
+    
+  items.add(mouse1);
+  items.add(mouse2);
+  items.add(mouse3);
+  items.add(keyboard1);
+  items.add(keyboard2);
+  items.add(keyboard3);
+  
+  double total = 0;
+  try {
+  total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(total, 890, 0);
+}
 }
