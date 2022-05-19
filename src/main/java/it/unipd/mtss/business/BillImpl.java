@@ -8,6 +8,7 @@ package it.unipd.mtss.business;
 import it.unipd.mtss.business.exception.BillException;
 import java.util.List;
 import it.unipd.mtss.model.EItem;
+import it.unipd.mtss.model.EItemType;
 import it.unipd.mtss.model.User;
 
 public class BillImpl implements Bill {
@@ -19,10 +20,15 @@ public double getOrderPrice(List <EItem> itemsOrdered, User user)
  double total = 0;
  for(EItem i: itemsOrdered)
  {
+  if(i.getPrice() < 0)
+  {
+   throw new BillException();
+  }
   total += i.getPrice();
  }
 
- total=total-getDiscountMore5Processors(itemsOrdered);
+ total -= getDiscountMore5Processors(itemsOrdered);
+ total -= getDiscountMoreThan10Mouses(itemsOrdered);
  return total;
 }
 
@@ -56,6 +62,29 @@ private double getDiscountMore5Processors(List <EItem> itemsOrdered)
   discount=lowerPrice/2;
  }
  return discount;
+}
+
+private double getDiscountMoreThan10Mouses(List <EItem> itemsOrdered)
+ throws BillException {
+
+ int counter = 0;
+ double min = -1;
+
+ int i = 0;
+ while(counter <= 10 && i<itemsOrdered.size())
+ {
+  EItem item = itemsOrdered.get(i);
+  if(item.getType() == EItemType.MOUSE)
+  {
+   counter++;
+   if(min == -1 || item.getPrice() < min)
+   {
+    min = item.getPrice();
+   }
+  }
+  i++;
+ }
+ return counter > 10? min : 0;
 }
 
 }
