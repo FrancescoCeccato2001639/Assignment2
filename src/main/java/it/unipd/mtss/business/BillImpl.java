@@ -18,6 +18,8 @@ public double getOrderPrice(List <EItem> itemsOrdered, User user)
  throws BillException {
 
  double total = 0;
+ checkMaxQtyItemsOrdered(itemsOrdered);
+
  for(EItem i: itemsOrdered)
  {
   total += i.getPrice();
@@ -138,6 +140,15 @@ private EItem getDiscountSameQtyMousesKeyboard(List <EItem> itemsOrdered)
  else
  {
   return null;
+ }
+}
+
+
+private void checkMaxQtyItemsOrdered(List <EItem> itemsOrdered)
+ throws BillException {
+ if(itemsOrdered.size()>30)
+ {
+  throw new BillException("Non è possibile ordinare più di 30 elementi!");
  }
 }
 

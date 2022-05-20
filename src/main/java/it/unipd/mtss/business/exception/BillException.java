@@ -6,5 +6,14 @@
 package it.unipd.mtss.business.exception;
 
 public class BillException extends Exception {
+
+ public BillException()
+ {
+ }
+ 
+ public BillException(String string)
+ {
+ }
+
     
 }
