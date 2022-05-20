@@ -318,4 +318,32 @@ public void calculateDiscountMoreThan1000Euros() {
   catch(BillException e) {}
   assertEquals(1050 *0.9, total, 0);
 }
+
+@Test(expected = BillException.class)
+ public void orderMore30Items() throws BillException {
+  List<EItem> items = new ArrayList<>();
+  for(int i = 0; i<31; i++)
+  {
+    items.add(new EItemImpl("mock", EItemType.CPU, 200));
+  }
+  
+  bill.getOrderPrice(items, userTest);
+ }
+
+ @Test
+ public void orderEqual30Items() throws BillException {
+  List<EItem> items = new ArrayList<>();
+  for(int i = 0; i<30; i++)
+  {
+    items.add(new EItemImpl("mock", EItemType.CPU, 200));
+  }
+  
+  double total = 0;
+  try {
+  total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(5310, total, 0);
+ }
+
 }
