@@ -17,6 +17,13 @@ public class EItemImpl implements EItem {
  super();
  this.name = name;
  this.type = type;
+
+ if(price <= 0)
+ {
+   throw new IllegalArgumentException(
+     "Il prezzo non può essere pari o inferiore a 0!");
+ }
+
  this.price = price;
  }
  

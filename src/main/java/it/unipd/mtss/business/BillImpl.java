@@ -20,16 +20,26 @@ public double getOrderPrice(List <EItem> itemsOrdered, User user)
  double total = 0;
  for(EItem i: itemsOrdered)
  {
-  if(i.getPrice() < 0)
-  {
-   throw new BillException();
-  }
   total += i.getPrice();
  }
 
  total -= getDiscountMore5Processors(itemsOrdered);
- total -= getDiscountMoreThan10Mouses(itemsOrdered);
- total -= getDiscountSameQtyMousesKeyboard(itemsOrdered);
+ EItem i1 = getDiscountMoreThan10Mouses(itemsOrdered);
+ EItem i2 = getDiscountSameQtyMousesKeyboard(itemsOrdered);
+ if(i1 != null)
+ {
+  total -= i1.getPrice();
+ }
+ if(i2 != null && i2 != i1)
+ {
+  total -= i2.getPrice();
+ }
+
+ if(total > 1000)
+ {
+ total *= 0.9;
+ }
+ 
  return total;
 }
 
@@ -65,13 +75,14 @@ private double getDiscountMore5Processors(List <EItem> itemsOrdered)
  return discount;
 }
 
-private double getDiscountMoreThan10Mouses(List <EItem> itemsOrdered)
+private EItem getDiscountMoreThan10Mouses(List <EItem> itemsOrdered)
  throws BillException {
 
  int counter = 0;
  double min = -1;
 
  int i = 0;
+ EItem minItem = null;
  while(counter <= 10 && i<itemsOrdered.size())
  {
   EItem item = itemsOrdered.get(i);
@@ -81,16 +92,18 @@ private double getDiscountMoreThan10Mouses(List <EItem> itemsOrdered)
    if(min == -1 || item.getPrice() < min)
    {
     min = item.getPrice();
+    minItem = item;
    }
   }
   i++;
  }
- return counter > 10? min : 0;
+ return counter > 10? minItem : null;
 }
 
-private double getDiscountSameQtyMousesKeyboard(List <EItem> itemsOrdered)
+private EItem getDiscountSameQtyMousesKeyboard(List <EItem> itemsOrdered)
  throws BillException {
  double lowerPrice = -1;
+ EItem minItem = null;
  double countMouses = 0;
  double countKeyboards = 0;
  
@@ -100,23 +113,17 @@ private double getDiscountSameQtyMousesKeyboard(List <EItem> itemsOrdered)
   {
    case MOUSE:
    countMouses++;
-    if(lowerPrice==-1)
+    if(lowerPrice==-1 || i.getPrice()<lowerPrice)
     {
-     lowerPrice=i.getPrice();
-    }
-    else if(i.getPrice()<lowerPrice)
-    {
+     minItem = i;
      lowerPrice=i.getPrice();
     }
     break;
     case KEYBOARD:
     countKeyboards++;
-    if(lowerPrice==-1)
+    if(lowerPrice==-1 || i.getPrice()<lowerPrice)
     {
-     lowerPrice=i.getPrice();
-    }
-    else if(i.getPrice()<lowerPrice)
-    {
+     minItem = i;
      lowerPrice=i.getPrice();
     }
     break;
@@ -126,11 +133,11 @@ private double getDiscountSameQtyMousesKeyboard(List <EItem> itemsOrdered)
 
  if(countKeyboards==countMouses && countKeyboards+countMouses!=0)
  {
-  return lowerPrice;
+  return minItem;
  }
  else
  {
-  return 0;
+  return null;
  }
 }
 
