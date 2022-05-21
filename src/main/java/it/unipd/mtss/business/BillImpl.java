@@ -39,9 +39,12 @@ public double getOrderPrice(List <EItem> itemsOrdered, User user)
 
  if(total > 1000)
  {
- total *= 0.9;
+  total *= 0.9;
  }
- 
+ else if(!itemsOrdered.isEmpty() && total < 10)
+ {
+  total += 2;
+ }
  return total;
 }
 

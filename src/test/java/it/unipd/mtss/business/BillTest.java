@@ -320,7 +320,7 @@ public void calculateDiscountMoreThan1000Euros() {
 }
 
 @Test(expected = BillException.class)
- public void orderMore30Items() throws BillException {
+public void orderMore30Items() throws BillException {
   List<EItem> items = new ArrayList<>();
   for(int i = 0; i<31; i++)
   {
@@ -346,4 +346,15 @@ public void calculateDiscountMoreThan1000Euros() {
   assertEquals(5310, total, 0);
  }
 
+ @Test
+ public void testApplyFee() throws BillException {
+  List<EItem> items = new ArrayList<>();
+  items.add(new EItemImpl("mock",EItemType.MOUSE,5));
+  double total = 0;
+  try {
+  total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(7, total, 0);
+ }
 }
