@@ -10,8 +10,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import it.unipd.mtss.business.exception.BillException;
 import it.unipd.mtss.model.EItem;
@@ -23,7 +23,7 @@ import it.unipd.mtss.model.User;
 public class BillTest {
 
  private Bill bill = new BillImpl();
- private User userTest = new User(0, "test", new Date(100000));
+ private User userTest = new User(0, "test", LocalDate.parse("1970-02-13"));
 
  @Test
  public void testEmptyList() {
@@ -67,14 +67,14 @@ public class BillTest {
 
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(420.99, total, 0);
-}
+ }
 
-@Test
-public void calculatePrice5Processors() {
+ @Test
+ public void calculatePrice5Processors() {
   List<EItem> items = new ArrayList<>();
   EItem proc1 = new EItemImpl("CPU_TEST",EItemType.CPU,50);
   EItem proc2 = new EItemImpl("CPU_TEST",EItemType.CPU,150.90);
@@ -90,14 +90,14 @@ public void calculatePrice5Processors() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(1250.9 *0.9, total, 0.001);
-}
+ }
 
-@Test
-public void calculatePrice6Processors() {
+ @Test
+ public void calculatePrice6Processors() {
   List<EItem> items = new ArrayList<>();
   EItem proc1 = new EItemImpl("CPU_TEST",EItemType.CPU,50);
   EItem proc2 = new EItemImpl("CPU_TEST",EItemType.CPU,150.90);
@@ -115,14 +115,14 @@ public void calculatePrice6Processors() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(1775.90 *0.9, total, 0.001);
-}
+ }
 
-@Test
-public void calculatePrice5ProcessorsOtherItem() {
+ @Test
+ public void calculatePrice5ProcessorsOtherItem() {
   List<EItem> items = new ArrayList<>();
   EItem proc1 = new EItemImpl("CPU_TEST",EItemType.CPU,50);
   EItem proc2 = new EItemImpl("CPU_TEST",EItemType.CPU,150.90);
@@ -140,14 +140,14 @@ public void calculatePrice5ProcessorsOtherItem() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(1260.90*0.9, total, 0.001);
-}
+ }
 
-@Test
-public void calculatePrice6ProcessorsOtherItem() {
+ @Test
+ public void calculatePrice6ProcessorsOtherItem() {
   List<EItem> items = new ArrayList<>();
   EItem proc1 = new EItemImpl("CPU_TEST",EItemType.CPU,50);
   EItem proc2 = new EItemImpl("CPU_TEST",EItemType.CPU,150.90);
@@ -167,14 +167,14 @@ public void calculatePrice6ProcessorsOtherItem() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(1785.90*0.9, total, 0.001);
-}
+ }
 
-@Test
-public void calculatePrice10Mouses() {
+ @Test
+ public void calculatePrice10Mouses() {
   List<EItem> items = new ArrayList<>();
   for(int i = 0 ; i<10; i++)
   {
@@ -187,10 +187,10 @@ public void calculatePrice10Mouses() {
   }
   catch(BillException e) {}
   assertEquals(537, total, 0);
-}
+ }
 
-@Test
-public void calculatePrice11Mouses() {
+ @Test
+ public void calculatePrice11Mouses() {
   List<EItem> items = new ArrayList<>();
   for(int i = 0 ; i<10; i++)
   {
@@ -204,10 +204,10 @@ public void calculatePrice11Mouses() {
   }
   catch(BillException e) {}
   assertEquals(537, total, 0);
-}
+ }
 
-@Test
-public void calculatePrice2Mouses3Keyboards() {
+ @Test
+ public void calculatePrice2Mouses3Keyboards() {
   List<EItem> items = new ArrayList<>();
   EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
   EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
@@ -223,14 +223,14 @@ public void calculatePrice2Mouses3Keyboards() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(710, total, 0);
-}
+ }
 
-@Test
-public void calculatePrice3Mouses2Keyboards() {
+ @Test
+ public void calculatePrice3Mouses2Keyboards() {
   List<EItem> items = new ArrayList<>();
   EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
   EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
@@ -246,14 +246,14 @@ public void calculatePrice3Mouses2Keyboards() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(690, total, 0);
-}
+ }
 
-@Test
-public void calculatePriceSameQtyMousesKeyboardsMouseLower() {
+ @Test
+ public void calculatePriceSameQtyMousesKeyboardsMouseLower() {
   List<EItem> items = new ArrayList<>();
   EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
   EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
@@ -271,14 +271,14 @@ public void calculatePriceSameQtyMousesKeyboardsMouseLower() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(910,total, 0);
-}
+ }
 
-@Test
-public void calculatePriceSameQtyMousesKeyboardsKeyboardLower() {
+ @Test
+ public void calculatePriceSameQtyMousesKeyboardsKeyboardLower() {
   List<EItem> items = new ArrayList<>();
   EItem mouse1 = new EItemImpl("MOUSE1",EItemType.MOUSE,50);
   EItem mouse2 = new EItemImpl("MOUSE2",EItemType.MOUSE,150);
@@ -296,14 +296,14 @@ public void calculatePriceSameQtyMousesKeyboardsKeyboardLower() {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(890,total, 0);
-}
+ }
 
-@Test
-public void calculateDiscountMoreThan1000Euros() {
+ @Test
+ public void calculateDiscountMoreThan1000Euros() {
   List<EItem> items = new ArrayList<>();
   for(int i = 0; i<5; i++)
   {
@@ -313,14 +313,14 @@ public void calculateDiscountMoreThan1000Euros() {
 
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(1050 *0.9, total, 0);
-}
+ }
 
-@Test(expected = BillException.class)
-public void orderMore30Items() throws BillException {
+ @Test(expected = BillException.class)
+ public void orderMore30Items() throws BillException {
   List<EItem> items = new ArrayList<>();
   for(int i = 0; i<31; i++)
   {
@@ -340,7 +340,7 @@ public void orderMore30Items() throws BillException {
   
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(5310, total, 0);
@@ -352,9 +352,48 @@ public void orderMore30Items() throws BillException {
   items.add(new EItemImpl("mock",EItemType.MOUSE,5));
   double total = 0;
   try {
-  total = bill.getOrderPrice(items, userTest);
+   total = bill.getOrderPrice(items, userTest);
   }
   catch(BillException e) {}
   assertEquals(7, total, 0);
  }
+
+ @Test(expected = IllegalArgumentException.class)
+ public void testZeroAmount() throws BillException {
+  List<EItem> mock = new ArrayList<>();
+  mock.add(new EItemImpl("bad", EItemType.CPU, 0));
+ }
+
+ @Test
+ public void calculateTotalPriceAdultUser() {
+  List<EItem> items = new ArrayList<>();
+  EItem proc = new EItemImpl("CPU_TEST",EItemType.CPU,250);
+  
+  items.add(proc);
+  
+  double total = 0;
+  try {
+   total = bill.getOrderPrice(items, userTest);
+  }
+  catch(BillException e) {}
+  assertEquals(250, total, 0);
+ }
+
+ @Test
+ public void calculateTotalPriceUnderageUserFreeOrderDeactive() {
+  User underageUser = new User(0, "test", LocalDate.parse("2020-02-13"));
+
+  List<EItem> items = new ArrayList<>();
+  EItem proc = new EItemImpl("CPU_TEST",EItemType.CPU,250);
+  
+  items.add(proc);
+  
+  double total = 0;
+  try {
+   total = bill.getOrderPrice(items, underageUser);
+  }
+  catch(BillException e) {}
+  assertEquals(250, total, 0);
+}
+
 }
