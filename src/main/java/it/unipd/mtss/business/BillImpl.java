@@ -6,44 +6,62 @@
 package it.unipd.mtss.business;
 
 import it.unipd.mtss.business.exception.BillException;
+
+import java.util.ArrayList;
 import java.util.List;
 import it.unipd.mtss.model.EItem;
 import it.unipd.mtss.model.EItemType;
 import it.unipd.mtss.model.User;
 
 public class BillImpl implements Bill {
+ List<Long> userGotFreeOrder=new ArrayList<>();
+ FreeOrder checkIsFreeOrder= new FreeOrder(0, false, 18,19, 10);
+ 
 
 @Override
 public double getOrderPrice(List <EItem> itemsOrdered, User user)
  throws BillException {
 
  double total = 0;
+ boolean isFreeOrNotDone=true;
  checkMaxQtyItemsOrdered(itemsOrdered);
 
- for(EItem i: itemsOrdered)
+ if(!userGotFreeOrder.contains(user.getId()))
  {
-  total += i.getPrice();
+  isFreeOrNotDone=checkIsFreeOrder.checkFreeOrder(user);
  }
 
- total -= getDiscountMore5Processors(itemsOrdered);
- EItem i1 = getDiscountMoreThan10Mouses(itemsOrdered);
- EItem i2 = getDiscountSameQtyMousesKeyboard(itemsOrdered);
- if(i1 != null)
+ if(!isFreeOrNotDone)
  {
-  total -= i1.getPrice();
- }
- if(i2 != null && i2 != i1)
- {
-  total -= i2.getPrice();
- }
+  for(EItem i: itemsOrdered)
+  {
+   total += i.getPrice();
+  }
 
- if(total > 1000)
- {
-  total *= 0.9;
+  total -= getDiscountMore5Processors(itemsOrdered);
+  EItem i1 = getDiscountMoreThan10Mouses(itemsOrdered);
+  EItem i2 = getDiscountSameQtyMousesKeyboard(itemsOrdered);
+  if(i1 != null)
+  {
+   total -= i1.getPrice();
+  }
+  if(i2 != null && i2 != i1)
+  {
+   total -= i2.getPrice();
+  }
+
+  if(total > 1000)
+  {
+   total *= 0.9;
+  }
+  else if(!itemsOrdered.isEmpty() && total < 10)
+  {
+   total += 2;
+  }
  }
- else if(!itemsOrdered.isEmpty() && total < 10)
+ else
  {
-  total += 2;
+  userGotFreeOrder.add(user.getId());
  }
  return total;
 }
